@@ -5,6 +5,15 @@
 static const int SCREEN_WIDTH = 1280;
 static const int SCREEN_HEIGHT = 800;
 
+typedef struct Ball
+{
+	Vector2 center;
+	float radius;
+	Vector2 speed;
+} Ball;
+
+Ball ball = {0};
+
 int main()
 {
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
@@ -21,56 +30,51 @@ int main()
 	int left_paddle_y = 20;
 	int right_paddle_y = 20;
 
-	float ball_x = SCREEN_WIDTH / 2;
-	float ball_y = SCREEN_HEIGHT / 2;
-	float ball_radius = 15.0;
+	// Ball setup
+	Ball ball = {0};
+	ball.center.x = SCREEN_WIDTH / 2;
+	ball.center.y = SCREEN_HEIGHT / 2;
+	ball.radius = 15.0;
+	ball.speed.x = 3.0;
+	ball.speed.y = 3.0;
 
-	float ball_speed_horizontal = 3.0;
-	float ball_speed_vertical = 3.0;
-
-	float speed_multiplier = 1.1;
+	const float speed_multiplier = 1.1;
 
 	while (!WindowShouldClose())
 	{
-		ball_x += ball_speed_horizontal;
-		ball_y += ball_speed_vertical;
+		ball.center.x += ball.speed.x;
+		ball.center.y += ball.speed.y;
 
 		// Collision with screen bounds
-		if (ball_y - ball_radius <= 0)
-		{
-			ball_speed_vertical *= -speed_multiplier;
-		}
-		if (ball_y + ball_radius >= SCREEN_HEIGHT)
-		{
-			ball_speed_vertical *= -speed_multiplier;
-		}
-		if (ball_x - ball_radius >= SCREEN_WIDTH)
+		if (ball.center.y - ball.radius <= 0) ball.speed.y *= -speed_multiplier;
+		if (ball.center.y + ball.radius >= SCREEN_HEIGHT) ball.speed.y *= -speed_multiplier;
+		if (ball.center.x - ball.radius >= SCREEN_WIDTH)
 		{
 			left_player_score += 1;
-			ball_x = SCREEN_WIDTH / 2;
-			ball_y = SCREEN_HEIGHT / 2;
-			ball_speed_horizontal = 3;
-			ball_speed_vertical = 3;
+			ball.center.x = SCREEN_WIDTH / 2;
+			ball.center.y = SCREEN_HEIGHT / 2;
+			ball.speed.x = 3;
+			ball.speed.y = 3;
 		}
-		if (ball_x + ball_radius <= 0)
+		if (ball.center.x + ball.radius <= 0)
 		{
 			right_player_score += 1;
-			ball_x = SCREEN_WIDTH / 2;
-			ball_y = SCREEN_HEIGHT / 2;
-			ball_speed_horizontal = -3;
-			ball_speed_vertical = 3;
+			ball.center.x = SCREEN_WIDTH / 2;
+			ball.center.y = SCREEN_HEIGHT / 2;
+			ball.speed.x = -3;
+			ball.speed.y = 3;
 		}
 
 		// Collision with left paddle
-		if (CheckCollisionCircleRec((Vector2){ball_x, ball_y}, ball_radius, (Rectangle){50, left_paddle_y, 20, 100}))
+		if (CheckCollisionCircleRec(ball.center, ball.radius, (Rectangle){50, left_paddle_y, 20, 100}))
 		{
-			ball_speed_horizontal *= -speed_multiplier;
+			ball.speed.x *= -speed_multiplier;
 		}
 
 		// Collision with right paddle
-		if (CheckCollisionCircleRec((Vector2){ball_x, ball_y}, ball_radius, (Rectangle){SCREEN_WIDTH - 70, right_paddle_y, 20, 100}))
+		if (CheckCollisionCircleRec(ball.center, ball.radius, (Rectangle){SCREEN_WIDTH - 70, right_paddle_y, 20, 100}))
 		{
-			ball_speed_horizontal *= -speed_multiplier;
+			ball.speed.x *= -speed_multiplier;
 		}
 
 		// Left paddle controls
@@ -101,7 +105,7 @@ int main()
 
 		DrawRectangle(50, left_paddle_y, 20, 100, WHITE);
 		DrawRectangle(SCREEN_WIDTH - 70, right_paddle_y, 20, 100, WHITE);
-		DrawCircle(ball_x, ball_y, ball_radius, WHITE);
+		DrawCircleV(ball.center, ball.radius, WHITE);
 
 		EndDrawing();
 	}
