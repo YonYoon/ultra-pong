@@ -25,9 +25,15 @@ int main()
 
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Eight Two Two");
 
+	InitAudioDevice();
+
 	SetTargetFPS(60);
 
 	SearchAndSetResourceDir("resources");
+
+	Sound fxCollision = LoadSound("collision.wav");
+	Sound fxUltra = LoadSound("ultra.wav");
+	Sound fxExplosion = LoadSound("explosion.wav");
 
 	int left_player_score = 0;
 	int right_player_score = 0;
@@ -59,10 +65,14 @@ int main()
 		ball.center.y += ball.speed.y;
 
 		// Collision with screen bounds
-		if (ball.center.y - ball.radius <= 0)
+		if (ball.center.y - ball.radius <= 0) {
 			ball.speed.y *= -speed_multiplier;
-		if (ball.center.y + ball.radius >= SCREEN_HEIGHT)
+			PlaySound(fxCollision);
+		}
+		if (ball.center.y + ball.radius >= SCREEN_HEIGHT) {
 			ball.speed.y *= -speed_multiplier;
+			PlaySound(fxCollision);
+		}
 		if (ball.center.x - ball.radius >= SCREEN_WIDTH)
 		{
 			left_player_score += 1;
@@ -70,6 +80,7 @@ int main()
 			ball.center.y = SCREEN_HEIGHT / 2;
 			ball.speed.x = 3;
 			ball.speed.y = 3;
+			PlaySound(fxExplosion);
 		}
 		if (ball.center.x + ball.radius <= 0)
 		{
@@ -78,6 +89,7 @@ int main()
 			ball.center.y = SCREEN_HEIGHT / 2;
 			ball.speed.x = -3;
 			ball.speed.y = 3;
+			PlaySound(fxExplosion);
 		}
 
 		// Collision with left and right paddle
@@ -85,6 +97,7 @@ int main()
 			CheckCollisionCircleRec(ball.center, ball.radius, paddle_right))
 		{
 			ball.speed.x *= -speed_multiplier;
+			PlaySound(fxUltra);
 		}
 
 		// Left paddle controls
@@ -101,16 +114,22 @@ int main()
 
 		BeginDrawing();
 
-		ClearBackground(BLACK);
+		ClearBackground(WHITE);
 
-		DrawText("822", 200, 200, 20, WHITE);
+		DrawText("822", 200, 200, 20, BLACK);
 
-		DrawRectangleRec(paddle_left, WHITE);
-		DrawRectangleRec(paddle_right, WHITE);
-		DrawCircleV(ball.center, ball.radius, WHITE);
+		DrawRectangleRec(paddle_left, BLACK);
+		DrawRectangleRec(paddle_right, BLACK);
+		DrawCircleV(ball.center, ball.radius, BLACK);
 
 		EndDrawing();
 	}
+
+	UnloadSound(fxCollision);
+	UnloadSound(fxExplosion);
+	UnloadSound(fxUltra);
+
+	CloseAudioDevice();
 
 	CloseWindow();
 	return 0;
