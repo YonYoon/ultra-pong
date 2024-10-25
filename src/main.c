@@ -16,6 +16,9 @@ Ball ball = {0};
 Rectangle paddle_left = {0};
 Rectangle paddle_right = {0};
 
+void move_paddle_up(Rectangle *paddle);
+void move_paddle_down(Rectangle *paddle);
+
 int main()
 {
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
@@ -86,23 +89,15 @@ int main()
 
 		// Left paddle controls
 		if (IsKeyDown(KEY_S))
-			paddle_left.y += 5;
-		if ((paddle_left.y + 100) >= SCREEN_HEIGHT)
-			paddle_left.y = SCREEN_HEIGHT - 100;
+			move_paddle_down(&paddle_left);
 		if (IsKeyDown(KEY_W))
-			paddle_left.y -= 5;
-		if (paddle_left.y <= 0)
-			paddle_left.y = 0;
+			move_paddle_up(&paddle_left);
 
 		// Right paddle controls
 		if (IsKeyDown(KEY_DOWN))
-			paddle_right.y += 5;
-		if ((paddle_right.y + 100) >= SCREEN_HEIGHT)
-			paddle_right.y = SCREEN_HEIGHT - 100;
+			move_paddle_down(&paddle_right);
 		if (IsKeyDown(KEY_UP))
-			paddle_right.y -= 5;
-		if (paddle_right.y <= 0)
-			paddle_right.y = 0;
+			move_paddle_up(&paddle_right);
 
 		BeginDrawing();
 
@@ -119,4 +114,18 @@ int main()
 
 	CloseWindow();
 	return 0;
+}
+
+void move_paddle_up(Rectangle *paddle)
+{
+	paddle->y -= 5;
+	if (paddle->y <= 0)
+		paddle->y = 0;
+}
+
+void move_paddle_down(Rectangle *paddle)
+{
+	paddle->y += 5;
+	if ((paddle->y + 100) >= SCREEN_HEIGHT)
+		paddle->y = SCREEN_HEIGHT - 100;
 }
