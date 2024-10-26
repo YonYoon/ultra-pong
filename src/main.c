@@ -23,7 +23,7 @@ int main()
 {
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Eight Two Two");
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ultra Pong");
 
 	InitAudioDevice();
 
