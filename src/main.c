@@ -59,17 +59,22 @@ int main()
 	paddle_right.x = SCREEN_WIDTH - 70;
 	paddle_right.y = (SCREEN_HEIGHT / 2) - (paddle_right.height / 2);
 
+	bool is_right_ultra = false;
+	bool is_left_ultra = false;
+
 	while (!WindowShouldClose())
 	{
 		ball.center.x += ball.speed.x;
 		ball.center.y += ball.speed.y;
 
 		// Collision with screen bounds
-		if (ball.center.y - ball.radius <= 0) {
+		if (ball.center.y - ball.radius <= 0)
+		{
 			ball.speed.y *= -speed_multiplier;
 			PlaySound(fxCollision);
 		}
-		if (ball.center.y + ball.radius >= SCREEN_HEIGHT) {
+		if (ball.center.y + ball.radius >= SCREEN_HEIGHT)
+		{
 			ball.speed.y *= -speed_multiplier;
 			PlaySound(fxCollision);
 		}
@@ -93,11 +98,33 @@ int main()
 		}
 
 		// Collision with left and right paddle
-		if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left) ||
-			CheckCollisionCircleRec(ball.center, ball.radius, paddle_right))
+		if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left))
 		{
 			ball.speed.x *= -speed_multiplier;
-			PlaySound(fxUltra);
+			if (is_left_ultra)
+			{
+				PlaySound(fxUltra);
+			}
+			else
+			{
+				PlaySound(fxCollision);
+			}
+			is_left_ultra = true;
+			is_right_ultra = false;
+		}
+		if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right))
+		{
+			ball.speed.x *= -speed_multiplier;
+			if (is_right_ultra)
+			{
+				PlaySound(fxUltra);
+			}
+			else
+			{
+				PlaySound(fxCollision);
+			}
+			is_left_ultra = false;
+			is_right_ultra = true;
 		}
 
 		// Left paddle controls
@@ -116,7 +143,8 @@ int main()
 
 		ClearBackground(WHITE);
 
-		DrawText("822", 200, 200, 20, BLACK);
+		DrawText(TextFormat("%i", left_player_score), 200, 100, 20, BLACK);
+		DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, 20, BLACK);
 
 		DrawRectangleRec(paddle_left, BLACK);
 		DrawRectangleRec(paddle_right, BLACK);
