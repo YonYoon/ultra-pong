@@ -1,10 +1,13 @@
-#include "stdio.h"
+#include <stdio.h>
 #include "raylib.h"
 
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
 
 static const int SCREEN_WIDTH = 1280;
 static const int SCREEN_HEIGHT = 800;
+
+static const int SCORE_FONT_SIZE = 50;
+static const int DASH_FONT_SIZE = 30;
 
 typedef struct Ball
 {
@@ -83,6 +86,8 @@ int main()
 
 	bool is_right_ultra = false;
 	bool is_left_ultra = false;
+
+	int dash_text_width = MeasureText("DASH", 30);
 
 	while (!WindowShouldClose())
 	{
@@ -188,16 +193,16 @@ int main()
 
 		ClearBackground(WHITE);
 
-		DrawText(TextFormat("%i", left_player_score), 200, 100, 50, BLACK);
-		DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, 50, BLACK);
+		DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
+		DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
 
 		if (paddle_left.dash_meter >= 100)
 		{
-			DrawText("DASH", 100, 100, 50, RED);
+			DrawText("DASH", 100, 50, DASH_FONT_SIZE, BLUE);
 		}
 		if (paddle_right.dash_meter >= 100)
 		{
-			DrawText("DASH", SCREEN_WIDTH - 150, 100, 50, RED);
+			DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
 		}
 
 		DrawRectangleRec(paddle_left.rect, BLACK);
