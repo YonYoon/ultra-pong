@@ -9,6 +9,13 @@ static const int SCREEN_HEIGHT = 800;
 static const int SCORE_FONT_SIZE = 50;
 static const int DASH_FONT_SIZE = 30;
 
+typedef enum GameScreen
+{
+	START,
+	GAMEPLAY,
+	ENDING,
+} GameScreen;
+
 typedef struct Ball
 {
 	Vector2 center;
@@ -44,6 +51,8 @@ int main()
 	SetTargetFPS(60);
 
 	SearchAndSetResourceDir("resources");
+
+	GameScreen currentScreen = START;
 
 	Sound fxCollision = LoadSound("collision.wav");
 	Sound fxUltra = LoadSound("ultra.wav");
@@ -91,123 +100,153 @@ int main()
 
 	while (!WindowShouldClose())
 	{
-		ball.center.x += ball.speed.x;
-		ball.center.y += ball.speed.y;
-
-		// Collision with screen bounds
-		if (ball.center.y - ball.radius <= 0)
+		switch (currentScreen)
 		{
-			ball.speed.y *= -speed_multiplier;
-			PlaySound(fxCollision);
-		}
-		if (ball.center.y + ball.radius >= SCREEN_HEIGHT)
+		case START:
+		case ENDING:
 		{
-			ball.speed.y *= -speed_multiplier;
-			PlaySound(fxCollision);
-		}
-		if (ball.center.x - ball.radius >= SCREEN_WIDTH)
-		{
-			left_player_score += 1;
-			ball.center.x = SCREEN_WIDTH / 2;
-			ball.center.y = SCREEN_HEIGHT / 2;
-			ball.speed.x = 3;
-			ball.speed.y = 3;
-			PlaySound(fxExplosion);
-		}
-		if (ball.center.x + ball.radius <= 0)
-		{
-			right_player_score += 1;
-			ball.center.x = SCREEN_WIDTH / 2;
-			ball.center.y = SCREEN_HEIGHT / 2;
-			ball.speed.x = -3;
-			ball.speed.y = 3;
-			PlaySound(fxExplosion);
-		}
-
-		// Collision with left and right paddle
-		if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left.rect))
-		{
-			ball.speed.x *= -speed_multiplier;
-			if (is_left_ultra)
-				PlaySound(fxUltra);
-			else
-				PlaySound(fxCollision);
-			is_left_ultra = true;
-			is_right_ultra = false;
-			paddle_left.dash_meter += 5;
-		}
-		if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right.rect))
-		{
-			ball.speed.x *= -speed_multiplier;
-			if (is_right_ultra)
-				PlaySound(fxUltra);
-			else
-				PlaySound(fxCollision);
-			is_left_ultra = false;
-			is_right_ultra = true;
-			paddle_right.dash_meter += 5;
-		}
-
-		if (paddle_left.acceleration > 1.0)
-		{
-			paddle_left.can_dash = false;
-			paddle_left.acceleration -= 0.1;
-		}
-		if (paddle_right.acceleration > 1.0)
-		{
-			paddle_right.can_dash = false;
-			paddle_right.acceleration -= 0.1;
-		}
-
-		// Left paddle controls
-		if (IsKeyDown(KEY_S))
-			move_paddle_down(&paddle_left);
-		if (IsKeyDown(KEY_W))
-			move_paddle_up(&paddle_left);
-
-		if (paddle_left.can_dash || paddle_left.dash_meter >= 100)
-		{
-			if (IsKeyDown(KEY_X))
+			if (IsKeyPressed(KEY_SPACE))
 			{
-				dash_paddle(&paddle_left);
-				paddle_left.dash_meter = 0;
+				currentScreen = GAMEPLAY;
 			}
 		}
+		break;
 
-		// Right paddle controls
-		if (IsKeyDown(KEY_J))
-			move_paddle_down(&paddle_right);
-		if (IsKeyDown(KEY_I))
-			move_paddle_up(&paddle_right);
-
-		if (paddle_right.can_dash || paddle_right.dash_meter >= 100)
+		case GAMEPLAY:
 		{
-			if (IsKeyDown(KEY_M))
+			ball.center.x += ball.speed.x;
+			ball.center.y += ball.speed.y;
+
+			// Collision with screen bounds
+			if (ball.center.y - ball.radius <= 0)
 			{
-				dash_paddle(&paddle_right);
-				paddle_right.dash_meter = 0;
+				ball.speed.y *= -speed_multiplier;
+				PlaySound(fxCollision);
 			}
+			if (ball.center.y + ball.radius >= SCREEN_HEIGHT)
+			{
+				ball.speed.y *= -speed_multiplier;
+				PlaySound(fxCollision);
+			}
+			if (ball.center.x - ball.radius >= SCREEN_WIDTH)
+			{
+				left_player_score += 1;
+				ball.center.x = SCREEN_WIDTH / 2;
+				ball.center.y = SCREEN_HEIGHT / 2;
+				ball.speed.x = 3;
+				ball.speed.y = 3;
+				PlaySound(fxExplosion);
+			}
+			if (ball.center.x + ball.radius <= 0)
+			{
+				right_player_score += 1;
+				ball.center.x = SCREEN_WIDTH / 2;
+				ball.center.y = SCREEN_HEIGHT / 2;
+				ball.speed.x = -3;
+				ball.speed.y = 3;
+				PlaySound(fxExplosion);
+			}
+
+			// Collision with left and right paddle
+			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left.rect))
+			{
+				ball.speed.x *= -speed_multiplier;
+				if (is_left_ultra)
+					PlaySound(fxUltra);
+				else
+					PlaySound(fxCollision);
+				is_left_ultra = true;
+				is_right_ultra = false;
+				paddle_left.dash_meter += 5;
+			}
+			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right.rect))
+			{
+				ball.speed.x *= -speed_multiplier;
+				if (is_right_ultra)
+					PlaySound(fxUltra);
+				else
+					PlaySound(fxCollision);
+				is_left_ultra = false;
+				is_right_ultra = true;
+				paddle_right.dash_meter += 5;
+			}
+
+			if (paddle_left.acceleration > 1.0)
+			{
+				paddle_left.can_dash = false;
+				paddle_left.acceleration -= 0.1;
+			}
+			if (paddle_right.acceleration > 1.0)
+			{
+				paddle_right.can_dash = false;
+				paddle_right.acceleration -= 0.1;
+			}
+
+			// Left paddle controls
+			if (IsKeyDown(KEY_S))
+				move_paddle_down(&paddle_left);
+			if (IsKeyDown(KEY_W))
+				move_paddle_up(&paddle_left);
+
+			if (paddle_left.can_dash || paddle_left.dash_meter >= 100)
+			{
+				if (IsKeyDown(KEY_X))
+				{
+					dash_paddle(&paddle_left);
+					paddle_left.dash_meter = 0;
+				}
+			}
+
+			// Right paddle controls
+			if (IsKeyDown(KEY_J))
+				move_paddle_down(&paddle_right);
+			if (IsKeyDown(KEY_I))
+				move_paddle_up(&paddle_right);
+
+			if (paddle_right.can_dash || paddle_right.dash_meter >= 100)
+			{
+				if (IsKeyDown(KEY_M))
+				{
+					dash_paddle(&paddle_right);
+					paddle_right.dash_meter = 0;
+				}
+			}
+		}
+		break;
 		}
 
 		BeginDrawing();
 
 		ClearBackground(WHITE);
 
-		DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
-		DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
-
-		if (paddle_left.dash_meter >= 100)
+		switch (currentScreen)
 		{
-			DrawText("DASH", 100, 50, DASH_FONT_SIZE, BLUE);
-		}
-		if (paddle_right.dash_meter >= 100)
+		case START:
 		{
-			DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
+			DrawText("Press SPACE to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 50, BLACK);
 		}
+		break;
 
-		DrawRectangleRec(paddle_left.rect, BLACK);
-		DrawRectangleRec(paddle_right.rect, BLACK);
-		DrawCircleV(ball.center, ball.radius, BLACK);
+		case GAMEPLAY:
+		{
+			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
+			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
+
+			if (paddle_left.dash_meter >= 100)
+			{
+				DrawText("DASH", 100, 50, DASH_FONT_SIZE, BLUE);
+			}
+			if (paddle_right.dash_meter >= 100)
+			{
+				DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
+			}
+
+			DrawRectangleRec(paddle_left.rect, BLACK);
+			DrawRectangleRec(paddle_right.rect, BLACK);
+			DrawCircleV(ball.center, ball.radius, BLACK);
+		}
+		break;
+		}
 
 		EndDrawing();
 	}
