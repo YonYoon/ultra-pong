@@ -6,6 +6,7 @@
 static const int SCREEN_WIDTH = 1280;
 static const int SCREEN_HEIGHT = 800;
 
+static const int TITLE_FONT_SIZE = 100;
 static const int SCORE_FONT_SIZE = 50;
 static const int DASH_FONT_SIZE = 30;
 
@@ -96,7 +97,10 @@ int main()
 	bool is_right_ultra = false;
 	bool is_left_ultra = false;
 
-	int dash_text_width = MeasureText("DASH", 30);
+	// Calculate text dimensions
+	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
+	int text_width = MeasureText("Press SPACE to start", 50);
+	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
 
 	while (!WindowShouldClose())
 	{
@@ -223,7 +227,8 @@ int main()
 		{
 		case START:
 		{
-			DrawText("Press SPACE to start", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("ULTRA PONG", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
+			DrawText("Press SPACE to start", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
 		}
 		break;
 
