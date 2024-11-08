@@ -111,6 +111,22 @@ int main()
 		{
 			if (IsKeyPressed(KEY_SPACE))
 			{
+				// reset the game
+				right_player_score = 0;
+				left_player_score = 0;
+
+				paddle_left.rect.x = 50;
+				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
+
+				paddle_right.rect.x = SCREEN_WIDTH - 70;
+				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
+
+				paddle_left.can_dash = false;
+				paddle_right.can_dash = false;
+
+				paddle_left.dash_meter = 0;
+				paddle_right.dash_meter = 0;
+
 				currentScreen = GAMEPLAY;
 			}
 		}
@@ -149,6 +165,11 @@ int main()
 				ball.speed.x = -3;
 				ball.speed.y = 3;
 				PlaySound(fxExplosion);
+			}
+
+			if (right_player_score == 2 || left_player_score == 2)
+			{
+				currentScreen = ENDING;
 			}
 
 			// Collision with left and right paddle
@@ -228,7 +249,17 @@ int main()
 		case START:
 		{
 			DrawText("ULTRA PONG", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("Press SPACE to start", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+		}
+		break;
+
+		case ENDING:
+		{
+			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
+			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
+
+			DrawText("THE END", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
+			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
 		}
 		break;
 
