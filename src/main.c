@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include "raylib.h"
+#include "ball.h"
+#include "config.h"
 
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
 
-static const int SCREEN_WIDTH = 1280;
-static const int SCREEN_HEIGHT = 800;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 800;
 
 static const int TITLE_FONT_SIZE = 100;
 static const int SCORE_FONT_SIZE = 50;
@@ -16,13 +18,6 @@ typedef enum GameScreen
 	GAMEPLAY,
 	ENDING,
 } GameScreen;
-
-typedef struct Ball
-{
-	Vector2 center;
-	float radius;
-	Vector2 speed;
-} Ball;
 
 typedef struct Paddle
 {
@@ -63,11 +58,7 @@ int main()
 	int right_player_score = 0;
 
 	// Ball setup
-	ball.center.x = SCREEN_WIDTH / 2;
-	ball.center.y = SCREEN_HEIGHT / 2;
-	ball.radius = 15.0;
-	ball.speed.x = 3.0;
-	ball.speed.y = 3.0;
+	Ball ball = ball_setup();
 
 	const float speed_multiplier = 1.1;
 
@@ -167,7 +158,7 @@ int main()
 				PlaySound(fxExplosion);
 			}
 
-			if (right_player_score == 2 || left_player_score == 2)
+			if (right_player_score == 19 || left_player_score == 19)
 			{
 				currentScreen = ENDING;
 			}
