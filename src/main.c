@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "raylib.h"
-#include "ball.h"
 #include "config.h"
+#include "ball.h"
+#include "paddle.h"
 
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
 
@@ -18,23 +19,6 @@ typedef enum GameScreen
 	GAMEPLAY,
 	ENDING,
 } GameScreen;
-
-typedef struct Paddle
-{
-	Rectangle rect;
-	float speed;
-	float acceleration;
-	bool can_dash;
-	int dash_meter;
-} Paddle;
-
-Ball ball = {0};
-Paddle paddle_left = {0};
-Paddle paddle_right = {0};
-
-void move_paddle_up(Paddle *paddle);
-void move_paddle_down(Paddle *paddle);
-void dash_paddle(Paddle *paddle);
 
 int main()
 {
@@ -63,27 +47,8 @@ int main()
 	const float speed_multiplier = 1.1;
 
 	// Paddles setup
-	paddle_left.rect.width = 20;
-	paddle_left.rect.height = 100;
-	paddle_right.rect.width = 20;
-	paddle_right.rect.height = 100;
-
-	paddle_left.rect.x = 50;
-	paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
-
-	paddle_right.rect.x = SCREEN_WIDTH - 70;
-	paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
-
-	paddle_left.speed = 5.0;
-	paddle_right.speed = 5.0;
-	paddle_left.acceleration = 1.0;
-	paddle_right.acceleration = 1.0;
-
-	paddle_left.can_dash = false;
-	paddle_right.can_dash = false;
-
-	paddle_left.dash_meter = 0;
-	paddle_right.dash_meter = 0;
+	Paddle paddle_left = paddle_setup(50);
+	Paddle paddle_right = paddle_setup(SCREEN_WIDTH - 70);
 
 	bool is_right_ultra = false;
 	bool is_left_ultra = false;
@@ -286,23 +251,4 @@ int main()
 
 	CloseWindow();
 	return 0;
-}
-
-void move_paddle_up(Paddle *paddle)
-{
-	paddle->rect.y -= paddle->speed * paddle->acceleration;
-	if (paddle->rect.y <= 0)
-		paddle->rect.y = 0;
-}
-
-void move_paddle_down(Paddle *paddle)
-{
-	paddle->rect.y += paddle->speed * paddle->acceleration;
-	if ((paddle->rect.y + 100) >= SCREEN_HEIGHT)
-		paddle->rect.y = SCREEN_HEIGHT - 100;
-}
-
-void dash_paddle(Paddle *paddle)
-{
-	paddle->acceleration = 3.0;
 }
