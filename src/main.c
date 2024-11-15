@@ -146,9 +146,12 @@ int main()
 					PlaySound(fxUltra);
 				else
 					PlaySound(fxCollision);
+				if (!is_left_ultra)
+				{
+					paddle_left.dash_meter += 1;
+				}
 				is_left_ultra = true;
 				is_right_ultra = false;
-				paddle_left.dash_meter += 5;
 			}
 			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right.rect))
 			{
@@ -165,9 +168,12 @@ int main()
 					PlaySound(fxUltra);
 				else
 					PlaySound(fxCollision);
+				if (!is_right_ultra)
+				{
+					paddle_right.dash_meter += 1;
+				}
 				is_left_ultra = false;
 				is_right_ultra = true;
-				paddle_right.dash_meter += 5;
 			}
 
 			if (paddle_left.acceleration > 1.0)
