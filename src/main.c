@@ -134,6 +134,14 @@ int main()
 			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left.rect))
 			{
 				ball.speed.x *= -speed_multiplier;
+				if (paddle_left.speed > 0 && ball.speed.y < 0)
+				{
+					ball.speed.y *= -1;
+				}
+				else if (paddle_left.speed < 0 && ball.speed.y > 0)
+				{
+					ball.speed.y *= -1;
+				}
 				if (is_left_ultra)
 					PlaySound(fxUltra);
 				else
@@ -145,6 +153,14 @@ int main()
 			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right.rect))
 			{
 				ball.speed.x *= -speed_multiplier;
+				if (paddle_right.speed > 0 && ball.speed.y < 0)
+				{
+					ball.speed.y *= -1;
+				}
+				else if (paddle_right.speed < 0 && ball.speed.y > 0)
+				{
+					ball.speed.y *= -1;
+				}
 				if (is_right_ultra)
 					PlaySound(fxUltra);
 				else
