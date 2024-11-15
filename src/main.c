@@ -9,6 +9,8 @@
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 
+const int HITS_TO_DASH = 3;
+
 static const int TITLE_FONT_SIZE = 100;
 static const int SCORE_FONT_SIZE = 50;
 static const int DASH_FONT_SIZE = 30;
@@ -169,7 +171,7 @@ int main()
 			if (IsKeyDown(KEY_W))
 				move_paddle_up(&paddle_left);
 
-			if (paddle_left.can_dash || paddle_left.dash_meter >= 100)
+			if (paddle_left.can_dash || paddle_left.dash_meter >= HITS_TO_DASH)
 			{
 				if (IsKeyDown(KEY_X))
 				{
@@ -184,7 +186,7 @@ int main()
 			if (IsKeyDown(KEY_I))
 				move_paddle_up(&paddle_right);
 
-			if (paddle_right.can_dash || paddle_right.dash_meter >= 100)
+			if (paddle_right.can_dash || paddle_right.dash_meter >= HITS_TO_DASH)
 			{
 				if (IsKeyDown(KEY_M))
 				{
@@ -224,11 +226,11 @@ int main()
 			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
 
-			if (paddle_left.dash_meter >= 100)
+			if (paddle_left.dash_meter >= HITS_TO_DASH)
 			{
 				DrawText("DASH", 100, 50, DASH_FONT_SIZE, BLUE);
 			}
-			if (paddle_right.dash_meter >= 100)
+			if (paddle_right.dash_meter >= HITS_TO_DASH)
 			{
 				DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
 			}
