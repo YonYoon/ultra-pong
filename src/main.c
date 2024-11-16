@@ -176,6 +176,16 @@ int main()
 				is_right_ultra = true;
 			}
 
+			// Limit ball's speed 
+			if (ball.speed.x > 45.0)
+			{
+				ball.speed.x = 45.0;
+			}
+			else if (ball.speed.x < -45.0)
+			{
+				ball.speed.x = -45.0;
+			}
+
 			if (paddle_left.acceleration > 1.0)
 			{
 				paddle_left.can_dash = false;
