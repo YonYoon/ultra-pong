@@ -9,6 +9,8 @@
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 
+const float BALL_SPEED_X = 4.0;
+
 const int HITS_TO_DASH = 3;
 
 static const int TITLE_FONT_SIZE = 100;
@@ -111,7 +113,7 @@ int main()
 				left_player_score += 1;
 				ball.center.x = SCREEN_WIDTH / 2;
 				ball.center.y = SCREEN_HEIGHT / 2;
-				ball.speed.x = 3;
+				ball.speed.x = BALL_SPEED_X;
 				ball.speed.y = 3;
 				PlaySound(fxExplosion);
 			}
@@ -120,7 +122,7 @@ int main()
 				right_player_score += 1;
 				ball.center.x = SCREEN_WIDTH / 2;
 				ball.center.y = SCREEN_HEIGHT / 2;
-				ball.speed.x = -3;
+				ball.speed.x = -BALL_SPEED_X;
 				ball.speed.y = 3;
 				PlaySound(fxExplosion);
 			}
