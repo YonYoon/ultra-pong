@@ -12,4 +12,6 @@ typedef struct Ball
 
 Ball ball_setup();
 
+float random_speed_y();
+
 #endif

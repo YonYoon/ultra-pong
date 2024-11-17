@@ -114,7 +114,7 @@ int main()
 				ball.center.x = SCREEN_WIDTH / 2;
 				ball.center.y = SCREEN_HEIGHT / 2;
 				ball.speed.x = BALL_SPEED_X;
-				ball.speed.y = 3;
+				ball.speed.y = random_speed_y();
 				PlaySound(fxExplosion);
 			}
 			if (ball.center.x + ball.radius <= 0)
@@ -123,7 +123,7 @@ int main()
 				ball.center.x = SCREEN_WIDTH / 2;
 				ball.center.y = SCREEN_HEIGHT / 2;
 				ball.speed.x = -BALL_SPEED_X;
-				ball.speed.y = 3;
+				ball.speed.y = random_speed_y();
 				PlaySound(fxExplosion);
 			}
 
