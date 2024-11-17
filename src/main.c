@@ -176,7 +176,7 @@ int main()
 				is_right_ultra = true;
 			}
 
-			// Limit ball's speed 
+			// Limit ball's speed
 			if (ball.speed.x > 45.0)
 			{
 				ball.speed.x = 45.0;
