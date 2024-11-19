@@ -10,10 +10,10 @@ typedef struct Paddle
     float acceleration;
     bool can_dash;
     int dash_meter;
+    bool is_ultra;
 } Paddle;
 
 Paddle paddle_setup(int x);
-
 void move_paddle_up(Paddle *paddle);
 void move_paddle_down(Paddle *paddle);
 void dash_paddle(Paddle *paddle);

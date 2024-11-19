@@ -10,6 +10,7 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 
 const float BALL_SPEED_X = 4.0;
+const float SPEED_MULTIPLIER = 1.1;
 
 const int HITS_TO_DASH = 3;
 
@@ -20,6 +21,7 @@ static const int DASH_FONT_SIZE = 30;
 typedef enum GameStage
 {
 	MENU,
+	SINGLE_PLAYER_MODE,
 	TWO_PLAYER_MODE,
 	GAME_OVER,
 } GameStage;
@@ -48,14 +50,9 @@ int main()
 	// Ball setup
 	Ball ball = ball_setup();
 
-	const float speed_multiplier = 1.1;
-
 	// Paddles setup
 	Paddle paddle_left = paddle_setup(50);
 	Paddle paddle_right = paddle_setup(SCREEN_WIDTH - 70);
-
-	bool is_right_ultra = false;
-	bool is_left_ultra = false;
 
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
@@ -89,43 +86,16 @@ int main()
 
 				gameStage = TWO_PLAYER_MODE;
 			}
+			break;
 		}
-		break;
 
+		case SINGLE_PLAYER_MODE:
 		case TWO_PLAYER_MODE:
 		{
-			ball.center.x += ball.speed.x;
-			ball.center.y += ball.speed.y;
-
-			// Collision with screen bounds
-			if (ball.center.y - ball.radius <= 0)
-			{
-				ball.speed.y *= -speed_multiplier;
-				PlaySound(fxCollision);
-			}
-			if (ball.center.y + ball.radius >= SCREEN_HEIGHT)
-			{
-				ball.speed.y *= -speed_multiplier;
-				PlaySound(fxCollision);
-			}
-			if (ball.center.x - ball.radius >= SCREEN_WIDTH)
-			{
-				left_player_score += 1;
-				ball.center.x = SCREEN_WIDTH / 2;
-				ball.center.y = SCREEN_HEIGHT / 2;
-				ball.speed.x = BALL_SPEED_X;
-				ball.speed.y = random_speed_y();
-				PlaySound(fxExplosion);
-			}
-			if (ball.center.x + ball.radius <= 0)
-			{
-				right_player_score += 1;
-				ball.center.x = SCREEN_WIDTH / 2;
-				ball.center.y = SCREEN_HEIGHT / 2;
-				ball.speed.x = -BALL_SPEED_X;
-				ball.speed.y = random_speed_y();
-				PlaySound(fxExplosion);
-			}
+			update_ball(&ball);
+			check_collision_ball_walls(&ball, fxCollision);
+			is_left_player_goal(&ball, fxExplosion);
+			is_right_player_goal(&ball, fxExplosion);
 
 			if (right_player_score == 19 || left_player_score == 19)
 			{
@@ -133,60 +103,8 @@ int main()
 			}
 
 			// Collision with left and right paddle
-			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_left.rect))
-			{
-				ball.speed.x *= -speed_multiplier;
-				if (paddle_left.speed > 0 && ball.speed.y < 0)
-				{
-					ball.speed.y *= -1;
-				}
-				else if (paddle_left.speed < 0 && ball.speed.y > 0)
-				{
-					ball.speed.y *= -1;
-				}
-				if (is_left_ultra)
-					PlaySound(fxUltra);
-				else
-					PlaySound(fxCollision);
-				if (!is_left_ultra)
-				{
-					paddle_left.dash_meter += 1;
-				}
-				is_left_ultra = true;
-				is_right_ultra = false;
-			}
-			if (CheckCollisionCircleRec(ball.center, ball.radius, paddle_right.rect))
-			{
-				ball.speed.x *= -speed_multiplier;
-				if (paddle_right.speed > 0 && ball.speed.y < 0)
-				{
-					ball.speed.y *= -1;
-				}
-				else if (paddle_right.speed < 0 && ball.speed.y > 0)
-				{
-					ball.speed.y *= -1;
-				}
-				if (is_right_ultra)
-					PlaySound(fxUltra);
-				else
-					PlaySound(fxCollision);
-				if (!is_right_ultra)
-				{
-					paddle_right.dash_meter += 1;
-				}
-				is_left_ultra = false;
-				is_right_ultra = true;
-			}
-
-			// Limit ball's speed
-			if (ball.speed.x > 45.0)
-			{
-				ball.speed.x = 45.0;
-			}
-			else if (ball.speed.x < -45.0)
-			{
-				ball.speed.x = -45.0;
-			}
+			check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
+			check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
 
 			if (paddle_left.acceleration > 1.0)
 			{
@@ -200,14 +118,14 @@ int main()
 			}
 
 			// Left paddle controls
-			if (IsKeyDown(KEY_S))
-				move_paddle_down(&paddle_left);
 			if (IsKeyDown(KEY_W))
 				move_paddle_up(&paddle_left);
+			if (IsKeyDown(KEY_S))
+				move_paddle_down(&paddle_left);
 
-			if (paddle_left.can_dash || paddle_left.dash_meter >= HITS_TO_DASH)
+			if (paddle_left.can_dash && paddle_left.dash_meter >= HITS_TO_DASH)
 			{
-				if (IsKeyDown(KEY_X))
+				if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
 				{
 					dash_paddle(&paddle_left);
 					paddle_left.dash_meter = 0;
@@ -215,21 +133,21 @@ int main()
 			}
 
 			// Right paddle controls
-			if (IsKeyDown(KEY_J))
-				move_paddle_down(&paddle_right);
 			if (IsKeyDown(KEY_I))
 				move_paddle_up(&paddle_right);
+			if (IsKeyDown(KEY_J))
+				move_paddle_down(&paddle_right);
 
-			if (paddle_right.can_dash || paddle_right.dash_meter >= HITS_TO_DASH)
+			if (paddle_right.can_dash && paddle_right.dash_meter >= HITS_TO_DASH)
 			{
-				if (IsKeyDown(KEY_M))
+				if (IsKeyDown(KEY_M) && IsKeyDown(KEY_I) || IsKeyDown(KEY_M) && IsKeyDown(KEY_J))
 				{
 					dash_paddle(&paddle_right);
 					paddle_right.dash_meter = 0;
 				}
 			}
+			break;
 		}
-		break;
 		}
 
 		BeginDrawing();
@@ -255,6 +173,7 @@ int main()
 		}
 		break;
 
+		case SINGLE_PLAYER_MODE:
 		case TWO_PLAYER_MODE:
 		{
 			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
