@@ -91,8 +91,10 @@ int main()
 		{
 			update_ball(&ball);
 			check_collision_ball_walls(&ball, fxCollision);
-			is_left_player_goal(&ball, fxExplosion);
-			is_right_player_goal(&ball, fxExplosion);
+			if (is_left_player_goal(&ball, fxExplosion))
+				left_player_score++;
+			if (is_right_player_goal(&ball, fxExplosion))
+				right_player_score++;
 
 			if (right_player_score == 19 || left_player_score == 19)
 			{
