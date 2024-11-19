@@ -7,7 +7,7 @@ const float PADDLE_SPEED = 7.0;
 Paddle paddle_setup(int x)
 {
     Paddle paddle;
-    
+
     paddle.rect.width = 20;
     paddle.rect.height = 100;
 
@@ -17,7 +17,6 @@ Paddle paddle_setup(int x)
     paddle.speed = PADDLE_SPEED;
     paddle.acceleration = 1.0;
 
-    paddle.can_dash = false;
     paddle.dash_meter = 0;
     paddle.is_ultra = false;
 

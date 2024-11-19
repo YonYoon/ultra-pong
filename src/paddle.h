@@ -8,7 +8,6 @@ typedef struct Paddle
     Rectangle rect;
     float speed;
     float acceleration;
-    bool can_dash;
     int dash_meter;
     bool is_ultra;
 } Paddle;

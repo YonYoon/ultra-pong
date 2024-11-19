@@ -78,9 +78,6 @@ int main()
 				paddle_right.rect.x = SCREEN_WIDTH - 70;
 				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
 
-				paddle_left.can_dash = false;
-				paddle_right.can_dash = false;
-
 				paddle_left.dash_meter = 0;
 				paddle_right.dash_meter = 0;
 
@@ -108,12 +105,10 @@ int main()
 
 			if (paddle_left.acceleration > 1.0)
 			{
-				paddle_left.can_dash = false;
 				paddle_left.acceleration -= 0.1;
 			}
 			if (paddle_right.acceleration > 1.0)
 			{
-				paddle_right.can_dash = false;
 				paddle_right.acceleration -= 0.1;
 			}
 
@@ -123,7 +118,7 @@ int main()
 			if (IsKeyDown(KEY_S))
 				move_paddle_down(&paddle_left);
 
-			if (paddle_left.can_dash && paddle_left.dash_meter >= HITS_TO_DASH)
+			if (paddle_left.dash_meter >= HITS_TO_DASH)
 			{
 				if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
 				{
@@ -138,7 +133,7 @@ int main()
 			if (IsKeyDown(KEY_J))
 				move_paddle_down(&paddle_right);
 
-			if (paddle_right.can_dash && paddle_right.dash_meter >= HITS_TO_DASH)
+			if (paddle_right.dash_meter >= HITS_TO_DASH)
 			{
 				if (IsKeyDown(KEY_M) && IsKeyDown(KEY_I) || IsKeyDown(KEY_M) && IsKeyDown(KEY_J))
 				{
