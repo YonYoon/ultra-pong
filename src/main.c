@@ -17,12 +17,12 @@ static const int TITLE_FONT_SIZE = 100;
 static const int SCORE_FONT_SIZE = 50;
 static const int DASH_FONT_SIZE = 30;
 
-typedef enum GameScreen
+typedef enum GameStage
 {
 	START,
 	GAMEPLAY,
 	ENDING,
-} GameScreen;
+} GameStage;
 
 int main()
 {
@@ -36,7 +36,7 @@ int main()
 
 	SearchAndSetResourceDir("resources");
 
-	GameScreen currentScreen = START;
+	GameStage gameStage = START;
 
 	Sound fxCollision = LoadSound("collision.wav");
 	Sound fxUltra = LoadSound("ultra.wav");
@@ -64,7 +64,7 @@ int main()
 
 	while (!WindowShouldClose())
 	{
-		switch (currentScreen)
+		switch (gameStage)
 		{
 		case START:
 		case ENDING:
@@ -87,7 +87,7 @@ int main()
 				paddle_left.dash_meter = 0;
 				paddle_right.dash_meter = 0;
 
-				currentScreen = GAMEPLAY;
+				gameStage = GAMEPLAY;
 			}
 		}
 		break;
@@ -129,7 +129,7 @@ int main()
 
 			if (right_player_score == 19 || left_player_score == 19)
 			{
-				currentScreen = ENDING;
+				gameStage = ENDING;
 			}
 
 			// Collision with left and right paddle
@@ -236,7 +236,7 @@ int main()
 
 		ClearBackground(WHITE);
 
-		switch (currentScreen)
+		switch (gameStage)
 		{
 		case START:
 		{
