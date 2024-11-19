@@ -19,9 +19,9 @@ static const int DASH_FONT_SIZE = 30;
 
 typedef enum GameStage
 {
-	START,
-	GAMEPLAY,
-	ENDING,
+	MENU,
+	TWO_PLAYER_MODE,
+	GAME_OVER,
 } GameStage;
 
 int main()
@@ -36,7 +36,7 @@ int main()
 
 	SearchAndSetResourceDir("resources");
 
-	GameStage gameStage = START;
+	GameStage gameStage = MENU;
 
 	Sound fxCollision = LoadSound("collision.wav");
 	Sound fxUltra = LoadSound("ultra.wav");
@@ -66,8 +66,8 @@ int main()
 	{
 		switch (gameStage)
 		{
-		case START:
-		case ENDING:
+		case MENU:
+		case GAME_OVER:
 		{
 			if (IsKeyPressed(KEY_SPACE))
 			{
@@ -87,12 +87,12 @@ int main()
 				paddle_left.dash_meter = 0;
 				paddle_right.dash_meter = 0;
 
-				gameStage = GAMEPLAY;
+				gameStage = TWO_PLAYER_MODE;
 			}
 		}
 		break;
 
-		case GAMEPLAY:
+		case TWO_PLAYER_MODE:
 		{
 			ball.center.x += ball.speed.x;
 			ball.center.y += ball.speed.y;
@@ -129,7 +129,7 @@ int main()
 
 			if (right_player_score == 19 || left_player_score == 19)
 			{
-				gameStage = ENDING;
+				gameStage = GAME_OVER;
 			}
 
 			// Collision with left and right paddle
@@ -238,14 +238,14 @@ int main()
 
 		switch (gameStage)
 		{
-		case START:
+		case MENU:
 		{
 			DrawText("ULTRA PONG", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
 			DrawText("Press SPACE to start", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
 		}
 		break;
 
-		case ENDING:
+		case GAME_OVER:
 		{
 			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
@@ -255,7 +255,7 @@ int main()
 		}
 		break;
 
-		case GAMEPLAY:
+		case TWO_PLAYER_MODE:
 		{
 			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
