@@ -57,7 +57,7 @@ int main()
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
 	int restart_text_width = MeasureText("Press SPACE to restart", 50);
-	int text_width = MeasureText("1 player", 50);
+	int text_width = MeasureText("S: 1 player", 50);
 	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
 
 	while (!WindowShouldClose())
@@ -266,8 +266,8 @@ int main()
 		case MENU:
 		{
 			DrawText("ULTRA PONG", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("1 player - S", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
-			DrawText("2 player - T", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2 + 70, 50, BLACK);
+			DrawText("S: 1 player", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2 + 50, 50, BLACK);
+			DrawText("T: 2 player", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2 + 140, 50, BLACK);
 		}
 		break;
 
