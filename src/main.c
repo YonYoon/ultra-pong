@@ -129,13 +129,16 @@ int main()
 			update_ball(&ball);
 			check_collision_ball_walls(&ball, fxCollision);
 			if (is_left_player_goal(&ball, fxExplosion))
-				left_player_score++;
-			if (is_right_player_goal(&ball, fxExplosion))
-				right_player_score++;
-
-			if (right_player_score == 19 || left_player_score == 19)
 			{
-				gameStage = GAME_OVER;
+				left_player_score++;
+				if (left_player_score == 19)
+					gameStage = GAME_OVER;
+			}
+			if (is_right_player_goal(&ball, fxExplosion))
+			{
+				right_player_score++;
+				if (right_player_score == 19)
+					gameStage = GAME_OVER;
 			}
 
 			// Collision with left and right paddle
@@ -190,13 +193,16 @@ int main()
 			update_ball(&ball);
 			check_collision_ball_walls(&ball, fxCollision);
 			if (is_left_player_goal(&ball, fxExplosion))
-				left_player_score++;
-			if (is_right_player_goal(&ball, fxExplosion))
-				right_player_score++;
-
-			if (right_player_score == 19 || left_player_score == 19)
 			{
-				gameStage = GAME_OVER;
+				left_player_score++;
+				if (left_player_score == 19)
+					gameStage = GAME_OVER;
+			}
+			if (is_right_player_goal(&ball, fxExplosion))
+			{
+				right_player_score++;
+				if (right_player_score == 19)
+					gameStage = GAME_OVER;
 			}
 
 			// Collision with left and right paddle
