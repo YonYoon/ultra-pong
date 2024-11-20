@@ -56,7 +56,8 @@ int main()
 
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
-	int text_width = MeasureText("Press SPACE to start", 50);
+	int restart_text_width = MeasureText("Press SPACE to restart", 50);
+	int text_width = MeasureText("1 player", 50);
 	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
 
 	while (!WindowShouldClose())
@@ -64,6 +65,43 @@ int main()
 		switch (gameStage)
 		{
 		case MENU:
+		{
+			if (IsKeyPressed(KEY_S))
+			{
+				// reset the game
+				right_player_score = 0;
+				left_player_score = 0;
+
+				paddle_left.rect.x = 50;
+				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
+
+				paddle_right.rect.x = SCREEN_WIDTH - 70;
+				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
+
+				paddle_left.dash_meter = 0;
+				paddle_right.dash_meter = 0;
+
+				gameStage = SINGLE_PLAYER_MODE;
+			}
+			if (IsKeyPressed(KEY_T))
+			{
+				// reset the game
+				right_player_score = 0;
+				left_player_score = 0;
+
+				paddle_left.rect.x = 50;
+				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
+
+				paddle_right.rect.x = SCREEN_WIDTH - 70;
+				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
+
+				paddle_left.dash_meter = 0;
+				paddle_right.dash_meter = 0;
+
+				gameStage = TWO_PLAYER_MODE;
+			}
+			break;
+		}
 		case GAME_OVER:
 		{
 			if (IsKeyPressed(KEY_SPACE))
@@ -87,6 +125,78 @@ int main()
 		}
 
 		case SINGLE_PLAYER_MODE:
+		{
+			update_ball(&ball);
+			check_collision_ball_walls(&ball, fxCollision);
+			if (is_left_player_goal(&ball, fxExplosion))
+				left_player_score++;
+			if (is_right_player_goal(&ball, fxExplosion))
+				right_player_score++;
+
+			if (right_player_score == 19 || left_player_score == 19)
+			{
+				gameStage = GAME_OVER;
+			}
+
+			// Collision with left and right paddle
+			check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
+			check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
+
+			if (paddle_left.acceleration > 1.0)
+			{
+				paddle_left.acceleration -= 0.1;
+			}
+			if (paddle_right.acceleration > 1.0)
+			{
+				paddle_right.acceleration -= 0.1;
+			}
+
+			// Left paddle controls
+			if (IsKeyDown(KEY_W))
+				move_paddle_up(&paddle_left);
+			if (IsKeyDown(KEY_S))
+				move_paddle_down(&paddle_left);
+
+			if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
+			{
+				if (paddle_left.dash_meter >= HITS_TO_DASH)
+				{
+					dash_paddle(&paddle_left);
+					paddle_left.dash_meter = 0;
+				}
+			}
+
+			// Right paddle AI
+			if (ball.speed.x > 0)
+			{
+				float distance_ball_paddle = paddle_right.rect.x - (ball.center.x + ball.radius);
+				float ball_travel_time = distance_ball_paddle / ball.speed.x;
+				float ball_Dy = ball.speed.y * ball_travel_time;
+				float ball_final_y = ball_Dy + ball.center.y;
+				float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
+				if (ball_final_y > paddle_center)
+				{
+					move_paddle_down(&paddle_right);
+				}
+				else if (ball_final_y < paddle_center)
+				{
+					move_paddle_up(&paddle_right);
+				}
+			}
+			// if (ball.center.x >= (SCREEN_WIDTH / 2))
+			// {
+			// 	float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
+			// 	if (ball.center.y > paddle_center)
+			// 	{
+			// 		move_paddle_down(&paddle_right);
+			// 	}
+			// 	else if (ball.center.y < paddle_center)
+			// 	{
+			// 		move_paddle_up(&paddle_right);
+			// 	}
+			// }
+			break;
+		}
 		case TWO_PLAYER_MODE:
 		{
 			update_ball(&ball);
@@ -156,7 +266,8 @@ int main()
 		case MENU:
 		{
 			DrawText("ULTRA PONG", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("Press SPACE to start", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("1 player - S", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("2 player - T", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2 + 70, 50, BLACK);
 		}
 		break;
 
@@ -166,7 +277,7 @@ int main()
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
 
 			DrawText("GAME OVER", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (restart_text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
 		}
 		break;
 
