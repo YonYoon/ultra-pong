@@ -183,18 +183,6 @@ int main()
 					move_paddle_up(&paddle_right);
 				}
 			}
-			// if (ball.center.x >= (SCREEN_WIDTH / 2))
-			// {
-			// 	float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
-			// 	if (ball.center.y > paddle_center)
-			// 	{
-			// 		move_paddle_down(&paddle_right);
-			// 	}
-			// 	else if (ball.center.y < paddle_center)
-			// 	{
-			// 		move_paddle_up(&paddle_right);
-			// 	}
-			// }
 			break;
 		}
 		case TWO_PLAYER_MODE:
