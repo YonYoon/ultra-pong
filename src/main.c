@@ -119,7 +119,7 @@ int main()
 				paddle_left.dash_meter = 0;
 				paddle_right.dash_meter = 0;
 
-				gameStage = TWO_PLAYER_MODE;
+				gameStage = MENU;
 			}
 			break;
 		}
