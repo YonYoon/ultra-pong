@@ -230,16 +230,6 @@ int main()
 		}
 		break;
 
-		case GAME_OVER:
-		{
-			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
-			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
-
-			DrawText("GAME OVER", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (restart_text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
-		}
-		break;
-
 		case SINGLE_PLAYER_MODE:
 		case TWO_PLAYER_MODE:
 		{
@@ -258,6 +248,16 @@ int main()
 			DrawRectangleRec(paddle_left.rect, BLACK);
 			DrawRectangleRec(paddle_right.rect, BLACK);
 			DrawCircleV(ball.center, ball.radius, BLACK);
+		}
+		break;
+
+		case GAME_OVER:
+		{
+			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
+			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
+
+			DrawText("GAME OVER", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
+			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (restart_text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
 		}
 		break;
 		}
