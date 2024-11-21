@@ -16,5 +16,6 @@ Paddle paddle_setup(int x);
 void move_paddle_up(Paddle *paddle);
 void move_paddle_down(Paddle *paddle);
 void dash_paddle(Paddle *paddle);
+void reset_paddles(Paddle *paddle_left, Paddle *paddle_right);
 
 #endif

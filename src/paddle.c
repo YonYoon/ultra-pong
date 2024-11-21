@@ -43,3 +43,14 @@ void dash_paddle(Paddle *paddle)
 {
     paddle->acceleration = 4.0;
 }
+
+void reset_paddles(Paddle *paddle_left, Paddle *paddle_right)
+{
+    paddle_left->rect.x = 50;
+    paddle_left->rect.y = (SCREEN_HEIGHT / 2) - (paddle_left->rect.height / 2);
+    paddle_left->dash_meter = 0;
+
+    paddle_right->rect.x = SCREEN_WIDTH - 70;
+    paddle_right->rect.y = (SCREEN_HEIGHT / 2) - (paddle_right->rect.height / 2);
+    paddle_right->dash_meter = 0;
+}

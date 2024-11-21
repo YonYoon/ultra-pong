@@ -68,36 +68,10 @@ int main()
 		{
 			if (IsKeyPressed(KEY_S))
 			{
-				// reset the game
-				right_player_score = 0;
-				left_player_score = 0;
-
-				paddle_left.rect.x = 50;
-				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
-
-				paddle_right.rect.x = SCREEN_WIDTH - 70;
-				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
-
-				paddle_left.dash_meter = 0;
-				paddle_right.dash_meter = 0;
-
 				gameStage = SINGLE_PLAYER_MODE;
 			}
 			if (IsKeyPressed(KEY_T))
 			{
-				// reset the game
-				right_player_score = 0;
-				left_player_score = 0;
-
-				paddle_left.rect.x = 50;
-				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
-
-				paddle_right.rect.x = SCREEN_WIDTH - 70;
-				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
-
-				paddle_left.dash_meter = 0;
-				paddle_right.dash_meter = 0;
-
 				gameStage = TWO_PLAYER_MODE;
 			}
 			break;
@@ -109,16 +83,7 @@ int main()
 				// reset the game
 				right_player_score = 0;
 				left_player_score = 0;
-
-				paddle_left.rect.x = 50;
-				paddle_left.rect.y = (SCREEN_HEIGHT / 2) - (paddle_left.rect.height / 2);
-
-				paddle_right.rect.x = SCREEN_WIDTH - 70;
-				paddle_right.rect.y = (SCREEN_HEIGHT / 2) - (paddle_right.rect.height / 2);
-
-				paddle_left.dash_meter = 0;
-				paddle_right.dash_meter = 0;
-
+				reset_paddles(&paddle_left, &paddle_right);
 				gameStage = MENU;
 			}
 			break;
