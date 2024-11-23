@@ -85,6 +85,10 @@ void check_collision_ball_paddle(Ball *ball, Paddle *paddle, Sound ultraSFX, Sou
     if (CheckCollisionCircleRec(ball->center, ball->radius, paddle->rect))
     {
         ball->speed.x *= -SPEED_MULTIPLIER;
+        // change ball's Y speed depending on paddle's Y speed
+        // side effect: changes the behavior of ULTRA
+        // without this code ULTRA is very random
+        // most of the time it leads to own goal
         if (paddle->speed > 0 && ball->speed.y < 0)
         {
             ball->speed.y *= -1;
