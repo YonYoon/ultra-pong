@@ -50,9 +50,11 @@ int main()
 	// Ball setup
 	Ball ball = ball_setup();
 
+	Texture2D john_tex = LoadTexture("JohnPong.png");
+
 	// Paddles setup
-	Paddle paddle_left = paddle_setup(50);
-	Paddle paddle_right = paddle_setup(SCREEN_WIDTH - 70);
+	Paddle paddle_left = paddle_setup(50, john_tex);
+	Paddle paddle_right = paddle_setup(SCREEN_WIDTH - 70, john_tex);
 
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
@@ -245,8 +247,11 @@ int main()
 				DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
 			}
 
-			DrawRectangleRec(paddle_left.rect, BLACK);
-			DrawRectangleRec(paddle_right.rect, BLACK);
+			DrawTextureV(john_tex, (Vector2){paddle_left.rect.x, paddle_left.rect.y}, WHITE);
+			DrawTextureV(john_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
+
+			// DrawRectangleRec(paddle_left.rect, BLACK);
+			// DrawRectangleRec(paddle_right.rect, BLACK);
 			DrawCircleV(ball.center, ball.radius, BLACK);
 		}
 		break;
@@ -264,6 +269,8 @@ int main()
 
 		EndDrawing();
 	}
+
+	UnloadTexture(john_tex);
 
 	UnloadSound(fxCollision);
 	UnloadSound(fxExplosion);

@@ -4,7 +4,7 @@
 
 const float PADDLE_SPEED = 7.0;
 
-Paddle paddle_setup(int x)
+Paddle paddle_setup(int x, Texture2D tex)
 {
     Paddle paddle;
 
@@ -13,6 +13,8 @@ Paddle paddle_setup(int x)
 
     paddle.rect.x = x;
     paddle.rect.y = (SCREEN_HEIGHT / 2) - (paddle.rect.height / 2);
+
+    paddle.tex = tex;
 
     paddle.speed = PADDLE_SPEED;
     paddle.acceleration = 1.0;
