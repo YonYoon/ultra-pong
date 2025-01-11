@@ -29,6 +29,15 @@ void update_ball(Ball *ball)
     {
         ball->speed.x = -45.0;
     }
+
+    if (ball->speed.y > 45.0)
+    {
+        ball->speed.y = 45.0;
+    }
+    else if (ball->speed.y < -45.0)
+    {
+        ball->speed.y = -45.0;
+    }
 }
 
 void check_collision_ball_walls(Ball *ball, Sound collisionSFX)
