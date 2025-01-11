@@ -11,7 +11,8 @@ Ball ball_setup()
     ball.center.y = SCREEN_HEIGHT / 2;
     ball.radius = 15.0;
     ball.speed.x = BALL_SPEED_X;
-    ball.speed.y = GetRandomValue(3, 6);
+    ball.speed.y = GetRandomValue(2, 4);
+    ball.isFirstServe = true;
     return ball;
 }
 
@@ -54,6 +55,7 @@ bool is_right_player_goal(Ball *ball, Sound goalSFX)
 {
     if (ball->center.x + ball->radius <= 0)
     {
+        ball->isFirstServe = true;
         PlaySound(goalSFX);
         ball->center.x = SCREEN_WIDTH / 2;
         ball->center.y = SCREEN_HEIGHT / 2;
@@ -71,6 +73,7 @@ bool is_left_player_goal(Ball *ball, Sound goalSFX)
 {
     if (ball->center.x - ball->radius >= SCREEN_WIDTH)
     {
+        ball->isFirstServe = true;
         PlaySound(goalSFX);
         ball->center.x = SCREEN_WIDTH / 2;
         ball->center.y = SCREEN_HEIGHT / 2;
@@ -88,6 +91,21 @@ void check_collision_ball_paddle(Ball *ball, Paddle *paddle, Sound ultraSFX, Sou
 {
     if (CheckCollisionCircleRec(ball->center, ball->radius, paddle->rect))
     {
+        // In the beginning of the game or after goal
+        // ball will be slower, so player has time to hit the ball
+        if (ball->isFirstServe == true)
+        {
+            if (ball->speed.x > 0)
+            {
+                ball->speed.x = 8.0;
+            }
+            else if (ball->speed.x < 0)
+            {
+                ball->speed.x = -8.0;
+            }
+            ball->isFirstServe = false;
+        }
+
         ball->speed.x *= -SPEED_MULTIPLIER;
         // change ball's Y speed depending on paddle's Y speed
         // side effect: changes the behavior of ULTRA

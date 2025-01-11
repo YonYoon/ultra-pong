@@ -9,6 +9,7 @@ typedef struct Ball
     Vector2 center;
     float radius;
     Vector2 speed;
+    bool isFirstServe;
 } Ball;
 
 Ball ball_setup();
