@@ -43,12 +43,7 @@ void update_ball(Ball *ball)
 void check_collision_ball_walls(Ball *ball, Sound collisionSFX)
 {
     // Collision with screen bounds
-    if (ball->center.y - ball->radius <= 0)
-    {
-        ball->speed.y *= -SPEED_MULTIPLIER;
-        PlaySound(collisionSFX);
-    }
-    if (ball->center.y + ball->radius >= SCREEN_HEIGHT)
+    if (ball->center.y - ball->radius <= 0 || ball->center.y + ball->radius >= SCREEN_HEIGHT)
     {
         ball->speed.y *= -SPEED_MULTIPLIER;
         PlaySound(collisionSFX);
