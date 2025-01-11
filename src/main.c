@@ -144,11 +144,11 @@ int main()
 				float ball_Dy = ball.speed.y * ball_travel_time;
 				float ball_final_y = ball_Dy + ball.center.y;
 				float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
-				if (ball_final_y > paddle_center)
+				if (ball_final_y > paddle_center + 7.0)
 				{
 					move_paddle_down(&paddle_right);
 				}
-				else if (ball_final_y < paddle_center)
+				else if (ball_final_y < paddle_center - 7.0)
 				{
 					move_paddle_up(&paddle_right);
 				}
