@@ -51,6 +51,7 @@ int main()
 	Ball ball = ball_setup();
 
 	Texture2D john_tex = LoadTexture("JohnPong.png");
+	Texture2D enemy_tex = LoadTexture("enemy.png");
 
 	// Paddles setup
 	Paddle paddle_left = paddle_setup(50, john_tex);
@@ -244,7 +245,7 @@ int main()
 			}
 
 			DrawTextureV(john_tex, (Vector2){paddle_left.rect.x, paddle_left.rect.y}, WHITE);
-			DrawTextureV(john_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
+			DrawTextureV(enemy_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
 
 			DrawCircleV(ball.center, ball.radius, BLACK);
 		}
@@ -265,6 +266,7 @@ int main()
 	}
 
 	UnloadTexture(john_tex);
+	UnloadTexture(enemy_tex);
 
 	UnloadSound(fxCollision);
 	UnloadSound(fxExplosion);
