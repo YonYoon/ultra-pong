@@ -133,7 +133,7 @@ int main()
 				if (paddle_left.dash_charges > 0)
 				{
 					dash_paddle(&paddle_left);
-					paddle_left.dash_meter = 0;
+					PlaySound(fxUltra);
 				}
 			}
 
