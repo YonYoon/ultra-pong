@@ -113,12 +113,13 @@ void check_collision_ball_paddle(Ball *ball, Paddle *paddle, Sound ultraSFX, Sou
         // most of the time it leads to own goal
         if (paddle->speed > 0 && ball->speed.y < 0)
         {
-            ball->speed.y *= -1;
+            ball->speed.y *= -1.3;
         }
         else if (paddle->speed < 0 && ball->speed.y > 0)
         {
-            ball->speed.y *= -1;
+            ball->speed.y *= -1.3;
         }
+
         if (paddle->is_ultra)
             PlaySound(ultraSFX);
         else
@@ -140,7 +141,7 @@ void check_collision_ball_paddle(Ball *ball, Paddle *paddle, Sound ultraSFX, Sou
             if (paddle->number_of_hits == 2)
             {
                 if (paddle->dash_charges < 3)
-        {
+                {
                     paddle->dash_charges++;
                 }
                 paddle->number_of_hits = 0;
