@@ -58,7 +58,7 @@ int main()
 
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
-	int restart_text_width = MeasureText("Press SPACE to restart", 50);
+	int restart_text_width = MeasureText("Press SPACE to return", 50);
 	int text_width = MeasureText("S: 1 player", 50);
 	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
 
@@ -257,8 +257,8 @@ int main()
 			DrawText(TextFormat("%i", left_player_score), 200, 100, SCORE_FONT_SIZE, BLACK);
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
 
-			DrawText("GAME OVER", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
-			DrawText("Press SPACE to restart", (SCREEN_WIDTH / 2) - (restart_text_width / 2), SCREEN_HEIGHT / 2, 50, BLACK);
+			DrawText("ULTRA OVER", (SCREEN_WIDTH / 2) - (title_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
+			DrawText("Press SPACE to return", (SCREEN_WIDTH / 2) - (restart_text_width / 2), SCREEN_HEIGHT / 2 + 100, 50, BLACK);
 		}
 		break;
 		}
