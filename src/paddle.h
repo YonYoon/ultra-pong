@@ -9,7 +9,8 @@ typedef struct Paddle
     Texture2D tex;
     float speed;
     float acceleration;
-    int dash_meter;
+    int number_of_hits;
+    int dash_charges;
     bool is_ultra;
 } Paddle;
 

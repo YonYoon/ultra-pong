@@ -123,9 +123,28 @@ void check_collision_ball_paddle(Ball *ball, Paddle *paddle, Sound ultraSFX, Sou
             PlaySound(ultraSFX);
         else
             PlaySound(collisionSFX);
-        if (!paddle->is_ultra)
+
+        if (paddle->acceleration > 1.0)
         {
-            paddle->dash_meter += 1;
+            ball->speed.x *= 2.0;
+            ball->speed.y /= 2;
+        }
+
+        if (!paddle->is_ultra) // think about this part
+        {
+            if (paddle->acceleration <= 1.0)
+            {
+                paddle->number_of_hits++; // should i give hits when player dashes?
+            }
+            
+            if (paddle->number_of_hits == 2)
+            {
+                if (paddle->dash_charges < 3)
+        {
+                    paddle->dash_charges++;
+                }
+                paddle->number_of_hits = 0;
+            }
         }
         paddle->is_ultra = true;
     }
