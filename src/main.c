@@ -115,11 +115,11 @@ int main()
 
 			if (paddle_left.acceleration > 1.0)
 			{
-				paddle_left.acceleration -= 0.1;
+				paddle_left.acceleration -= 0.05;
 			}
 			if (paddle_right.acceleration > 1.0)
 			{
-				paddle_right.acceleration -= 0.1;
+				paddle_right.acceleration -= 0.05;
 			}
 
 			// Left paddle controls
