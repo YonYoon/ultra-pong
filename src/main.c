@@ -128,7 +128,7 @@ int main()
 			if (IsKeyDown(KEY_S))
 				move_paddle_down(&paddle_left);
 
-			if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
+			if (IsKeyPressed(KEY_X) && IsKeyDown(KEY_W) || IsKeyPressed(KEY_X) && IsKeyDown(KEY_S))
 			{
 				if (paddle_left.dash_charges > 0)
 				{
