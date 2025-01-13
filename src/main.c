@@ -246,8 +246,6 @@ int main()
 			DrawTextureV(john_tex, (Vector2){paddle_left.rect.x, paddle_left.rect.y}, WHITE);
 			DrawTextureV(john_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
 
-			// DrawRectangleRec(paddle_left.rect, BLACK);
-			// DrawRectangleRec(paddle_right.rect, BLACK);
 			DrawCircleV(ball.center, ball.radius, BLACK);
 		}
 		break;
