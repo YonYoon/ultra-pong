@@ -64,7 +64,7 @@ int main()
 	int pause_text_width = MeasureText("PAUSE", TITLE_FONT_SIZE);
 	int restart_text_width = MeasureText("Press SPACE to return", 50);
 	int text_width = MeasureText("S: 1 player", 50);
-	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
+	int dash_text_width = MeasureText("DASH CHARGES: 0", DASH_FONT_SIZE);
 
 	while (!WindowShouldClose())
 	{
@@ -274,10 +274,7 @@ int main()
 			DrawText(TextFormat("%i", right_player_score), SCREEN_WIDTH - 200, 100, SCORE_FONT_SIZE, BLACK);
 
 			DrawText(TextFormat("DASH CHARGES: %i", paddle_left.dash_charges), 100, 50, DASH_FONT_SIZE, BLUE);
-			if (paddle_right.dash_charges > 0)
-			{
-				DrawText("DASH", SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
-			}
+			DrawText(TextFormat("DASH CHARGES: %i", paddle_right.dash_charges), SCREEN_WIDTH - 100 - dash_text_width, 50, DASH_FONT_SIZE, BLUE);
 
 			DrawTextureV(john_tex, (Vector2){paddle_left.rect.x, paddle_left.rect.y}, WHITE);
 			DrawTextureV(enemy_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
