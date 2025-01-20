@@ -170,6 +170,7 @@ int main()
 				else if (ball_final_y < paddle_center - 7.0)
 				{
 					move_paddle_up(&paddle_right);
+					}
 				}
 			}
 			break;
