@@ -111,65 +111,65 @@ int main()
 					is_pause = true;
 				}
 
-			update_ball(&ball);
-			check_collision_ball_walls(&ball, fxCollision);
-			if (is_left_player_goal(&ball, fxExplosion))
-			{
-				left_player_score++;
-				if (left_player_score == 19)
-					gameStage = GAME_OVER;
-			}
-			if (is_right_player_goal(&ball, fxExplosion))
-			{
-				right_player_score++;
-				if (right_player_score == 19)
-					gameStage = GAME_OVER;
-			}
+				update_ball(&ball);
+				check_collision_ball_walls(&ball, fxCollision);
+				if (is_left_player_goal(&ball, fxExplosion))
+				{
+					left_player_score++;
+					if (left_player_score == 19)
+						gameStage = GAME_OVER;
+				}
+				if (is_right_player_goal(&ball, fxExplosion))
+				{
+					right_player_score++;
+					if (right_player_score == 19)
+						gameStage = GAME_OVER;
+				}
 
-			// Collision with left and right paddle
-			check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
-			check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
-			paddle_right.dash_charges = 0;
+				// Collision with left and right paddle
+				check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
+				check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
+				paddle_right.dash_charges = 0;
 
-			if (paddle_left.acceleration > 1.0)
-			{
-				paddle_left.acceleration -= 0.05;
-			}
-			if (paddle_right.acceleration > 1.0)
-			{
-				paddle_right.acceleration -= 0.05;
-			}
+				if (paddle_left.acceleration > 1.0)
+				{
+					paddle_left.acceleration -= 0.05;
+				}
+				if (paddle_right.acceleration > 1.0)
+				{
+					paddle_right.acceleration -= 0.05;
+				}
 
-			// Left paddle controls
-			if (IsKeyDown(KEY_W))
-				move_paddle_up(&paddle_left);
-			if (IsKeyDown(KEY_S))
-				move_paddle_down(&paddle_left);
+				// Left paddle controls
+				if (IsKeyDown(KEY_W))
+					move_paddle_up(&paddle_left);
+				if (IsKeyDown(KEY_S))
+					move_paddle_down(&paddle_left);
 
 				if (IsKeyPressed(KEY_SPACE) && IsKeyDown(KEY_W) || IsKeyPressed(KEY_SPACE) && IsKeyDown(KEY_S))
-			{
-				if (paddle_left.dash_charges > 0)
 				{
-					dash_paddle(&paddle_left);
-					PlaySound(fxUltra);
+					if (paddle_left.dash_charges > 0)
+					{
+						dash_paddle(&paddle_left);
+						PlaySound(fxUltra);
+					}
 				}
-			}
 
-			// Right paddle AI
-			if (ball.speed.x > 0)
-			{
-				float distance_ball_paddle = paddle_right.rect.x - (ball.center.x + ball.radius);
-				float ball_travel_time = distance_ball_paddle / ball.speed.x;
-				float ball_Dy = ball.speed.y * ball_travel_time;
-				float ball_final_y = ball_Dy + ball.center.y;
-				float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
-				if (ball_final_y > paddle_center + 7.0)
+				// Right paddle AI
+				if (ball.speed.x > 0)
 				{
-					move_paddle_down(&paddle_right);
-				}
-				else if (ball_final_y < paddle_center - 7.0)
-				{
-					move_paddle_up(&paddle_right);
+					float distance_ball_paddle = paddle_right.rect.x - (ball.center.x + ball.radius);
+					float ball_travel_time = distance_ball_paddle / ball.speed.x;
+					float ball_Dy = ball.speed.y * ball_travel_time;
+					float ball_final_y = ball_Dy + ball.center.y;
+					float paddle_center = paddle_right.rect.y + (paddle_right.rect.height / 2);
+					if (ball_final_y > paddle_center + 7.0)
+					{
+						move_paddle_down(&paddle_right);
+					}
+					else if (ball_final_y < paddle_center - 7.0)
+					{
+						move_paddle_up(&paddle_right);
 					}
 				}
 			}
@@ -191,60 +191,60 @@ int main()
 					is_pause = true;
 				}
 
-			update_ball(&ball);
-			check_collision_ball_walls(&ball, fxCollision);
-			if (is_left_player_goal(&ball, fxExplosion))
-			{
-				left_player_score++;
-				if (left_player_score == 19)
-					gameStage = GAME_OVER;
-			}
-			if (is_right_player_goal(&ball, fxExplosion))
-			{
-				right_player_score++;
-				if (right_player_score == 19)
-					gameStage = GAME_OVER;
-			}
-
-			// Collision with left and right paddle
-			check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
-			check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
-
-			if (paddle_left.acceleration > 1.0)
-			{
-				paddle_left.acceleration -= 0.1;
-			}
-			if (paddle_right.acceleration > 1.0)
-			{
-				paddle_right.acceleration -= 0.1;
-			}
-
-			// Left paddle controls
-			if (IsKeyDown(KEY_W))
-				move_paddle_up(&paddle_left);
-			if (IsKeyDown(KEY_S))
-				move_paddle_down(&paddle_left);
-
-			if (paddle_left.dash_charges > 0)
-			{
-				if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
+				update_ball(&ball);
+				check_collision_ball_walls(&ball, fxCollision);
+				if (is_left_player_goal(&ball, fxExplosion))
 				{
-					dash_paddle(&paddle_left);
-						PlaySound(fxUltra);
+					left_player_score++;
+					if (left_player_score == 19)
+						gameStage = GAME_OVER;
 				}
-			}
-
-			// Right paddle controls
-			if (IsKeyDown(KEY_I))
-				move_paddle_up(&paddle_right);
-			if (IsKeyDown(KEY_J))
-				move_paddle_down(&paddle_right);
-
-			if (paddle_right.dash_charges > 0)
-			{
-				if (IsKeyDown(KEY_M) && IsKeyDown(KEY_I) || IsKeyDown(KEY_M) && IsKeyDown(KEY_J))
+				if (is_right_player_goal(&ball, fxExplosion))
 				{
-					dash_paddle(&paddle_right);
+					right_player_score++;
+					if (right_player_score == 19)
+						gameStage = GAME_OVER;
+				}
+
+				// Collision with left and right paddle
+				check_collision_ball_paddle(&ball, &paddle_left, fxUltra, fxCollision);
+				check_collision_ball_paddle(&ball, &paddle_right, fxUltra, fxCollision);
+
+				if (paddle_left.acceleration > 1.0)
+				{
+					paddle_left.acceleration -= 0.1;
+				}
+				if (paddle_right.acceleration > 1.0)
+				{
+					paddle_right.acceleration -= 0.1;
+				}
+
+				// Left paddle controls
+				if (IsKeyDown(KEY_W))
+					move_paddle_up(&paddle_left);
+				if (IsKeyDown(KEY_S))
+					move_paddle_down(&paddle_left);
+
+				if (paddle_left.dash_charges > 0)
+				{
+					if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
+					{
+						dash_paddle(&paddle_left);
+						PlaySound(fxUltra);
+					}
+				}
+
+				// Right paddle controls
+				if (IsKeyDown(KEY_I))
+					move_paddle_up(&paddle_right);
+				if (IsKeyDown(KEY_J))
+					move_paddle_down(&paddle_right);
+
+				if (paddle_right.dash_charges > 0)
+				{
+					if (IsKeyDown(KEY_M) && IsKeyDown(KEY_I) || IsKeyDown(KEY_M) && IsKeyDown(KEY_J))
+					{
+						dash_paddle(&paddle_right);
 						PlaySound(fxUltra);
 					}
 				}
