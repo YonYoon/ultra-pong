@@ -47,6 +47,8 @@ int main()
 	int left_player_score = 0;
 	int right_player_score = 0;
 
+	bool is_pause = false;
+
 	// Ball setup
 	Ball ball = ball_setup();
 
@@ -59,6 +61,7 @@ int main()
 
 	// Calculate text dimensions
 	int title_text_width = MeasureText("ULTRA PONG", TITLE_FONT_SIZE);
+	int pause_text_width = MeasureText("PAUSE", TITLE_FONT_SIZE);
 	int restart_text_width = MeasureText("Press SPACE to return", 50);
 	int text_width = MeasureText("S: 1 player", 50);
 	int dash_text_width = MeasureText("DASH", DASH_FONT_SIZE);
@@ -94,6 +97,20 @@ int main()
 
 		case SINGLE_PLAYER_MODE:
 		{
+			if (is_pause)
+			{
+				if (IsKeyPressed(KEY_P))
+				{
+					is_pause = false;
+				}
+			}
+			else
+			{
+				if (IsKeyPressed(KEY_P))
+				{
+					is_pause = true;
+				}
+
 			update_ball(&ball);
 			check_collision_ball_walls(&ball, fxCollision);
 			if (is_left_player_goal(&ball, fxExplosion))
@@ -159,6 +176,20 @@ int main()
 		}
 		case TWO_PLAYER_MODE:
 		{
+			if (is_pause)
+			{
+				if (IsKeyPressed(KEY_P))
+				{
+					is_pause = false;
+				}
+			}
+			else
+			{
+				if (IsKeyPressed(KEY_P))
+				{
+					is_pause = true;
+				}
+
 			update_ball(&ball);
 			check_collision_ball_walls(&ball, fxCollision);
 			if (is_left_player_goal(&ball, fxExplosion))
@@ -251,6 +282,11 @@ int main()
 			DrawTextureV(enemy_tex, (Vector2){paddle_right.rect.x, paddle_right.rect.y}, WHITE);
 
 			DrawCircleV(ball.center, ball.radius, BLACK);
+
+			if (is_pause)
+			{
+				DrawText("PAUSE", (SCREEN_WIDTH / 2) - (pause_text_width / 2), SCREEN_HEIGHT / 2 - 100, TITLE_FONT_SIZE, RED);
+			}
 		}
 		break;
 
