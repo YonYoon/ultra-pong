@@ -198,6 +198,7 @@ int main()
 				if (IsKeyDown(KEY_X) && IsKeyDown(KEY_W) || IsKeyDown(KEY_X) && IsKeyDown(KEY_S))
 				{
 					dash_paddle(&paddle_left);
+						PlaySound(fxUltra);
 				}
 			}
 
@@ -212,6 +213,8 @@ int main()
 				if (IsKeyDown(KEY_M) && IsKeyDown(KEY_I) || IsKeyDown(KEY_M) && IsKeyDown(KEY_J))
 				{
 					dash_paddle(&paddle_right);
+						PlaySound(fxUltra);
+					}
 				}
 			}
 			break;
